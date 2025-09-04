@@ -1,0 +1,22 @@
+import pandas as pd
+
+# Step 1: generate 10 working days starting from 1st Sept 2025
+working_days = pd.bdate_range(start="2025-09-01", periods=10)
+
+# Step 2: create your execution status table with these dates
+data = {
+    "Date": working_days.strftime("%Y-%m-%d"),  # convert to string
+    "Planned_TCs": [100, 120, 130, 150, 160, 170, 180, 190, 200, 210],
+    "Executed_TCs": [90, 110, 125, 140, 150, 160, 170, 175, 190, 200],
+    "Passed_TCs": [85, 105, 120, 135, 145, 155, 165, 170, 185, 195],
+    "Failed_TCs": [5, 5, 5, 5, 5, 5, 5, 5, 5, 5],
+    "Blocked_TCs": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+}
+
+df_status = pd.DataFrame(data)
+
+# Step 3: Add Pass% as formula (Passed_TCs / Executed_TCs * 100)
+df_status["Pass%"] = (df_status["Passed_TCs"] / df_status["Executed_TCs"]) * 100
+df_status["Pass%"] = df_status["Pass%"].round(2)  # round to 2 decimals
+
+df_status
